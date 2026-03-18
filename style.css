@@ -17,6 +17,9 @@
     --radius-md: 12px;
     --radius-sm: 10px;
     --max-width: 1180px;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --t-fast: 160ms;
+    --t-med: 260ms;
 }
 
 *,
@@ -43,6 +46,7 @@ body {
 a {
     color: inherit;
     text-decoration: none;
+    transition: color var(--t-fast) var(--ease);
 }
 
 img {
@@ -152,7 +156,22 @@ img {
     border-radius: 999px;
     color: var(--muted);
     font-weight: 600;
-    transition: 0.25s ease;
+    position: relative;
+    transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+
+.site-nav a::after {
+    content: "";
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 6px;
+    height: 2px;
+    background: var(--primary);
+    border-radius: 999px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--t-med) var(--ease);
 }
 
 .site-nav a:hover,
@@ -160,6 +179,11 @@ img {
     color: var(--primary);
     background: var(--surface);
     box-shadow: var(--shadow-soft);
+}
+
+.site-nav a:hover::after,
+.site-nav a.active::after {
+    transform: scaleX(1);
 }
 
 .button {
@@ -172,7 +196,7 @@ img {
     padding: 12px 20px;
     font-weight: 700;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
 }
 
 .button:hover {
@@ -215,7 +239,7 @@ img {
     color: #fff;
     background: linear-gradient(120deg, #12263f 0%, #005f9e 55%, orange 100%);
     box-shadow: var(--shadow-strong);
-    animation: hero-in 0.7s ease;
+    animation: hero-in 0.7s var(--ease);
 }
 
 .hero-panel::before {
@@ -227,6 +251,7 @@ img {
     height: 390px;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0));
+    animation: orb-float 12s ease-in-out infinite;
 }
 
 .home-hero {
@@ -278,6 +303,13 @@ img {
     padding: 14px;
     background: rgba(255, 255, 255, 0.12);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform var(--t-med) var(--ease), background var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
+}
+
+.hero-stats div:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.35);
 }
 
 .hero-stats strong {
@@ -297,6 +329,81 @@ img {
     gap: 22px;
 }
 
+.media-strip .section-heading {
+    margin-bottom: 26px;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.image-grid.two-cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.image-card {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-soft);
+    transition: transform var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
+}
+
+.image-card img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    display: block;
+    transform: scale(1);
+    transition: transform var(--t-med) var(--ease);
+}
+
+.image-card figcaption {
+    padding: 12px 14px;
+    font-weight: 700;
+    color: var(--text);
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    font-size: 0.95rem;
+}
+
+.image-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-strong);
+    border-color: rgba(0, 95, 158, 0.25);
+}
+
+.image-card:hover img {
+    transform: scale(1.04);
+}
+
+.image-banner {
+    margin: 0;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-strong);
+}
+
+.image-banner img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    display: block;
+}
+
+.image-banner figcaption {
+    padding: 14px 18px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    font-weight: 700;
+}
+
 .services-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -313,7 +420,20 @@ img {
     border: 1px solid var(--border);
     background: var(--surface);
     box-shadow: var(--shadow-soft);
-    animation: card-in 0.6s ease both;
+    animation: card-in 0.6s var(--ease) both;
+    transition: transform var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
+}
+
+.service-card:hover,
+.value-card:hover,
+.process-card:hover,
+.project-card:hover,
+.info-card:hover,
+.faq-card:hover,
+.surface-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-strong);
+    border-color: rgba(0, 95, 158, 0.25);
 }
 
 .service-card i,
@@ -360,10 +480,12 @@ img {
     gap: 8px;
     font-weight: 700;
     color: var(--primary);
+    transition: transform var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
 }
 
 .text-link:hover {
     color: var(--primary-strong);
+    transform: translateX(3px);
 }
 
 .check-list {
@@ -406,6 +528,13 @@ img {
     border-radius: var(--radius-sm);
     border: 1px solid var(--border);
     background: var(--surface-muted);
+    transition: transform var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
+}
+
+.metric-item:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 95, 158, 0.2);
+    box-shadow: var(--shadow-soft);
 }
 
 .metric-item strong {
@@ -472,6 +601,12 @@ img {
     padding: 24px 16px;
     text-align: center;
     background: var(--surface);
+    transition: transform var(--t-med) var(--ease), background var(--t-med) var(--ease);
+}
+
+.stats-grid .stat:hover {
+    transform: translateY(-4px);
+    background: #f1f7ff;
 }
 
 .stats-grid strong {
@@ -546,7 +681,13 @@ img {
     font: inherit;
     color: #0f172a;
     background: #fbfdff;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+
+.contact-form input:hover,
+.contact-form select:hover,
+.contact-form textarea:hover {
+    transform: translateY(-1px);
 }
 
 .contact-form textarea {
@@ -568,6 +709,7 @@ img {
     background: linear-gradient(115deg, #0b233e, #005f9e 70%);
     color: #fff;
     box-shadow: var(--shadow-strong);
+    animation: card-in 0.7s var(--ease) both;
 }
 
 .cta-panel h2 {
@@ -628,10 +770,28 @@ img {
 .footer-links span {
     color: #cbd5e1;
     font-size: 0.95rem;
+    transition: color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
 }
 
 .footer-links a:hover {
     color: #ffffff;
+    transform: translateX(3px);
+}
+
+.footer-gallery {
+    margin-top: 26px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.footer-gallery img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
 }
 
 .footer-bottom {
@@ -662,6 +822,18 @@ img {
     to {
         transform: translateY(0);
         opacity: 1;
+    }
+}
+
+@keyframes orb-float {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    50% {
+        transform: translate3d(-18px, -10px, 0);
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
     }
 }
 
@@ -705,6 +877,14 @@ img {
     .stats-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .image-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .footer-gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 @media (max-width: 680px) {
@@ -722,6 +902,7 @@ img {
     .projects-grid,
     .info-grid,
     .faq-grid,
+    .image-grid,
     .form-grid.two-cols,
     .stats-grid,
     .footer-grid {
@@ -735,6 +916,22 @@ img {
 
     .hero-actions {
         width: 100%;
+    }
+
+    .image-card img {
+        height: 210px;
+    }
+
+    .image-banner img {
+        height: 240px;
+    }
+
+    .footer-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-gallery img {
+        height: 150px;
     }
 }
 
