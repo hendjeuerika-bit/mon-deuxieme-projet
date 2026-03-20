@@ -6,15 +6,24 @@
         window.matchMedia &&
         window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const animateCounter = (element) => {
-        if (element.dataset.animated === "true") return;
-        element.dataset.animated = "true";
+    const animationFrames = new WeakMap();
 
+    const resetCounter = (element) => {
+        const suffix = element.dataset.suffix || "";
+        element.textContent = `0${suffix}`;
+    };
+
+    const animateCounter = (element) => {
         const target = Number(element.dataset.count);
         const suffix = element.dataset.suffix || "";
-        const duration = Number(element.dataset.duration) || 1600;
+        const duration = Number(element.dataset.duration) || 2600;
 
         if (!Number.isFinite(target)) return;
+
+        const existingFrame = animationFrames.get(element);
+        if (existingFrame) {
+            cancelAnimationFrame(existingFrame);
+        }
 
         if (prefersReducedMotion || duration <= 0) {
             element.textContent = `${target}${suffix}`;
@@ -27,12 +36,13 @@
             const value = Math.floor(progress * target);
             element.textContent = `${value}${suffix}`;
             if (progress < 1) {
-                requestAnimationFrame(tick);
+                animationFrames.set(element, requestAnimationFrame(tick));
             } else {
                 element.textContent = `${target}${suffix}`;
+                animationFrames.delete(element);
             }
         };
-        requestAnimationFrame(tick);
+        animationFrames.set(element, requestAnimationFrame(tick));
     };
 
     if ("IntersectionObserver" in window) {
@@ -41,14 +51,18 @@
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         animateCounter(entry.target);
-                        observer.unobserve(entry.target);
+                    } else {
+                        resetCounter(entry.target);
                     }
                 });
             },
-            { threshold: 0.3 }
+            { threshold: 0.35 }
         );
 
-        counters.forEach((counter) => observer.observe(counter));
+        counters.forEach((counter) => {
+            resetCounter(counter);
+            observer.observe(counter);
+        });
     } else {
         counters.forEach(animateCounter);
     }

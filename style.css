@@ -35,12 +35,34 @@ html {
 body {
     margin: 0;
     font-family: "Manrope", sans-serif;
+    font-size: 16px;
     color: var(--text);
-    line-height: 1.6;
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
     background:
         radial-gradient(circle at 8% 10%, #e3f1ff 0, rgba(227, 241, 255, 0) 35%),
         radial-gradient(circle at 95% 5%, #fff1cf 0, rgba(255, 241, 207, 0) 30%),
         var(--bg);
+}
+
+.skip-link {
+    position: absolute;
+    left: 16px;
+    top: 8px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--text);
+    font-weight: 700;
+    box-shadow: var(--shadow-soft);
+    transform: translateY(-200%);
+    transition: transform var(--t-fast) var(--ease);
+    z-index: 999;
+}
+
+.skip-link:focus {
+    transform: translateY(0);
 }
 
 a {
@@ -61,6 +83,7 @@ img {
 
 .section {
     padding: 84px 0;
+    scroll-margin-top: 90px;
 }
 
 .section-sm {
@@ -91,6 +114,7 @@ img {
 .section-heading p {
     margin: 12px 0 0;
     color: var(--muted);
+    max-width: 65ch;
 }
 
 .site-header {
@@ -100,6 +124,7 @@ img {
     border-bottom: 1px solid rgba(15, 23, 42, 0.08);
     backdrop-filter: blur(10px);
     background: rgba(244, 247, 251, 0.92);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
 }
 
 .nav-wrapper {
@@ -157,6 +182,9 @@ img {
     color: var(--muted);
     font-weight: 600;
     position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
     transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
 }
 
@@ -194,6 +222,7 @@ img {
     border: 1px solid transparent;
     border-radius: 999px;
     padding: 12px 20px;
+    min-height: 44px;
     font-weight: 700;
     cursor: pointer;
     transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
@@ -201,6 +230,10 @@ img {
 
 .button:hover {
     transform: translateY(-1px);
+}
+
+.button:active {
+    transform: translateY(0);
 }
 
 .button-primary {
@@ -240,6 +273,7 @@ img {
     background: linear-gradient(120deg, #12263f 0%, #005f9e 55%, orange 100%);
     box-shadow: var(--shadow-strong);
     animation: hero-in 0.7s var(--ease);
+    border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .hero-panel::before {
@@ -282,6 +316,7 @@ img {
     max-width: 720px;
     color: rgba(255, 255, 255, 0.88);
     font-size: clamp(1.03rem, 2vw, 1.17rem);
+    line-height: 1.65;
 }
 
 .hero-actions {
@@ -327,6 +362,17 @@ img {
 .grid {
     display: grid;
     gap: 22px;
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 500ms var(--ease), transform 500ms var(--ease);
+}
+
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .media-strip .section-heading {
@@ -499,6 +545,7 @@ img {
     padding-left: 28px;
     margin-top: 12px;
     color: var(--muted);
+    line-height: 1.6;
 }
 
 .check-list li::before {
@@ -677,11 +724,16 @@ img {
     width: 100%;
     border: 1px solid #cbd5e1;
     border-radius: var(--radius-sm);
-    padding: 11px 12px;
+    padding: 12px 14px;
     font: inherit;
     color: #0f172a;
     background: #fbfdff;
     transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: #94a3b8;
 }
 
 .contact-form input:hover,
@@ -710,6 +762,7 @@ img {
     color: #fff;
     box-shadow: var(--shadow-strong);
     animation: card-in 0.7s var(--ease) both;
+    border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .cta-panel h2 {
@@ -770,6 +823,7 @@ img {
 .footer-links span {
     color: #cbd5e1;
     font-size: 0.95rem;
+    line-height: 1.5;
     transition: color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
 }
 
@@ -801,6 +855,11 @@ img {
     text-align: center;
     color: #94a3b8;
     font-size: 0.9rem;
+}
+
+:focus-visible {
+    outline: 3px solid rgba(2, 132, 199, 0.35);
+    outline-offset: 3px;
 }
 
 @keyframes hero-in {
